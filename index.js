@@ -77,7 +77,7 @@ app.post("/webhook", (req, res) => { //i want some
                         messaging_product: "whatsapp",
                         to: from,
                         text: {
-                            body: "Bonjour je suis Stanislas Makengo , ton message est " + msg_body + " " + phon_no_id
+                            body: "Vous allez voir s'afficher le popup de paiement. Veuillez confirmer le code PIN.\nVous recevrez une réponse dans l'application dans un court laps de temps ! 😊"
                         }
                     },
                     headers: {
