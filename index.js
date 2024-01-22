@@ -53,51 +53,89 @@ app.post("/webhook", (req, res) => { //i want some
             console.log("from " + from);
             console.log("boady param " + msg_body);
 
-            axios({
-                method: "POST",
-                url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                data: {
-                    messaging_product: "whatsapp",
-                    to: from,
-                    text: {
-                        body: "Bonjour je suis Stanislas Makengo , ton message est " + msg_body + " " + phon_no_id
+            if (msg_body.toLowerCase().includes("bonjour") || msg_body.toLowerCase().includes("salut") || msg_body.toLowerCase().includes("bonsoir")) {
+                axios({
+                    method: "POST",
+                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                    data: {
+                        messaging_product: "whatsapp",
+                        to: from,
+                        text: {
+                            body: "Bonjour 👋🏾, je m'appelle *Stanislas Makengo*.\nComment puis-je vous assister aujourd'hui ?"
+                        }
+                    },
+                    headers: {
+                        "Content-Type": "application/json"
                     }
-                },
-                headers: {
-                    "Content-Type": "application/json"
-                }
 
-            });
+                });
+            } else if (msg_body.toLowerCase().includes("abonnement")) {
+                axios({
+                    method: "POST",
+                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                    data: {
+                        messaging_product: "whatsapp",
+                        to: from,
+                        text: {
+                            body: "Bonjour je suis Stanislas Makengo , ton message est " + msg_body + " " + phon_no_id
+                        }
+                    },
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
 
-            //test payment
+                });
 
-            let data = new FormData();
-            data.append('currency', 'CDF');
-            data.append('provider', 'MPESA');
-            data.append('walletID', '0826016607');
-            data.append('etudiantID', 'STDTAC20230330092HFM5UM110173');
-            data.append('abonnementID', '13');
-            
-            let config = {
-              method: 'post',
-              maxBodyLength: Infinity,
-              url: 'https://tag.trans-academia.cd/Api_abonnement.php',
-              headers: { 
-                ...data.getHeaders()
-              },
-              data : data
-            };
-            
-            axios.request(config)
-            .then((response) => {
-              console.log(JSON.stringify(response.data));
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+                //test payment
 
-            // close payment
-            
+                let data = new FormData();
+                data.append('currency', 'CDF');
+                data.append('provider', 'MPESA');
+                data.append('walletID', '0826016607');
+                data.append('etudiantID', 'STDTAC20230330092HFM5UM110173');
+                data.append('abonnementID', '13');
+
+                let config = {
+                    method: 'post',
+                    maxBodyLength: Infinity,
+                    url: 'https://tag.trans-academia.cd/Api_abonnement.php',
+                    headers: {
+                        ...data.getHeaders()
+                    },
+                    data: data
+                };
+
+                axios.request(config)
+                    .then((response) => {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+                // close payment
+
+            } else {
+                axios({
+                    method: "POST",
+                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
+                    data: {
+                        messaging_product: "whatsapp",
+                        to: from,
+                        text: {
+                            body: "Bye Bye "
+                        }
+                    },
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+
+                });
+            }
+
+
+
+
 
             res.sendStatus(200);
         } else {
