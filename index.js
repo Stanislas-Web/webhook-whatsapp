@@ -2,6 +2,7 @@ const express = require("express");
 const body_parser = require("body-parser");
 const axios = require("axios");
 require('dotenv').config();
+const FormData = require('form-data');
 
 const app = express().use(body_parser.json());
 
@@ -70,21 +71,33 @@ app.post("/webhook", (req, res) => { //i want some
 
             //test payment
 
-            axios({
-                method: "POST",
-                url: "https://tag.trans-academia.cd/Api_abonnement.php",
-                data: {
-                    'currency':"CDF",
-                    'provider':"MPESA",
-                    'walletID': "0826016607",
-                    'etudiantID':"STDTAC20230330092HFM5UM110173",
-                    'abonnementID':"13",
-                  },
-                headers: {
-                    "Content-Type": "application/json"
-                }
-
+            let data = new FormData();
+            data.append('currency', 'CDF');
+            data.append('provider', 'MPESA');
+            data.append('walletID', '0826016607');
+            data.append('etudiantID', 'STDTAC20230330092HFM5UM110173');
+            data.append('abonnementID', '13');
+            
+            let config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: 'https://tag.trans-academia.cd/Api_abonnement.php',
+              headers: { 
+                ...data.getHeaders()
+              },
+              data : data
+            };
+            
+            axios.request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
             });
+
+            // close payment
+            
 
             res.sendStatus(200);
         } else {
@@ -94,6 +107,7 @@ app.post("/webhook", (req, res) => { //i want some
     }
 
 });
+
 
 app.get("/", (req, res) => {
     res.status(200).send("hello this is webhook setup");
