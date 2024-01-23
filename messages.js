@@ -59,58 +59,78 @@ async function payment(currency, provider, walletId, abonnement) {
 }
 
 
-function menuAbonnement(numero) {
-    const donnees = JSON.stringify({
-        "messaging_product": "whatsapp",
-        "to": numero,
-        "type": "interactive",
-        "interactive": {
-            "type": "list",
-            "body": {
-                "text": "✅ J'ai ces options"
-            },
-            "footer": {
-                "text": "Sélectionnez l'une des options pour que nous puissions vous aider"
-            },
-            "action": {
-                "button": "Voir les options",
-                "sections": [
-                    {
-                        "title": "Acheter et vendre des produits",
-                        "rows": [
-                            {
-                                "id": "main-comprar",
-                                "title": "Acheter",
-                                "description": "Achetez les meilleurs produits pour votre maison"
-                            },
-                            {
-                                "id": "main-vender",
-                                "title": "Vendre",
-                                "description": "Vendez vos produits"
-                            }
-                        ]
-                    },
-                    {
-                        "title": "📍Centre d'attention",
-                        "rows": [
-                            {
-                                "id": "main-agencia",
-                                "title": "Agence",
-                                "description": "Vous pouvez visiter notre agence."
-                            },
-                            {
-                                "id": "main-contacto",
-                                "title": "Centre de contact",
-                                "description": "L'un de nos agents vous assistera."
-                            }
-                        ]
+async function menuAbonnement(phon_no_id, token, destinataire){
+    try {
+        const response = await axios({
+            method: "POST",
+            url: `https://graph.facebook.com/v18.0/${phon_no_id}/messages?access_token=${token}`,
+            data: {
+                messaging_product: "whatsapp",
+                to: destinataire,
+                text: {
+                    "messaging_product": "whatsapp",
+                    "to": destinataire,
+                    "type": "interactive",
+                    "interactive": {
+                        "type": "list",
+                        "body": {
+                            "text": "✅ J'ai ces options"
+                        },
+                        "footer": {
+                            "text": "Sélectionnez l'une des options pour que nous puissions vous aider"
+                        },
+                        "action": {
+                            "button": "Voir les options",
+                            "sections": [
+                                {
+                                    "title": "Acheter et vendre des produits",
+                                    "rows": [
+                                        {
+                                            "id": "main-comprar",
+                                            "title": "Acheter",
+                                            "description": "Achetez les meilleurs produits pour votre maison"
+                                        },
+                                        {
+                                            "id": "main-vender",
+                                            "title": "Vendre",
+                                            "description": "Vendez vos produits"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "title": "📍Centre d'attention",
+                                    "rows": [
+                                        {
+                                            "id": "main-agencia",
+                                            "title": "Agence",
+                                            "description": "Vous pouvez visiter notre agence."
+                                        },
+                                        {
+                                            "id": "main-contacto",
+                                            "title": "Centre de contact",
+                                            "description": "L'un de nos agents vous assistera."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     }
-                ]
+                }
+            },
+            headers: {
+                "Content-Type": "application/json"
             }
-        }
-    });
-    return donnees;
+        });
+
+        console.log("Réponse Axios :", response.data);
+    } catch (error) {
+
+        console.error("Erreur Axios :", error.message);
+    }
 }
+
+
+
 
 
 
