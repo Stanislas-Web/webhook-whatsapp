@@ -3,6 +3,8 @@ const body_parser = require("body-parser");
 const axios = require("axios");
 require('dotenv').config();
 const FormData = require('form-data');
+const sendMessage = require("./messages");
+const payment = require('./messages');
 
 const app = express().use(body_parser.json());
 
@@ -53,84 +55,29 @@ app.post("/webhook", (req, res) => { //i want some
             console.log("from " + from);
             console.log("boady param " + msg_body);
 
-            if (msg_body.toLowerCase().includes("bonjour") || msg_body.toLowerCase().includes("salut") || msg_body.toLowerCase().includes("bonsoir")) {
-                axios({
-                    method: "POST",
-                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                    data: {
-                        messaging_product: "whatsapp",
-                        to: from,
-                        text: {
-                            body: "Bonjour 👋🏾, je m'appelle *Stanislas Makengo*.\nComment puis-je vous assister aujourd'hui ?"
-                        }
-                    },
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
+            if (msg_body.toLowerCase().includes("bonjour") || msg_body.toLowerCase().includes("salut") || msg_body.toLowerCase().includes("bonsoir") || msg_body.toLowerCase().includes("hello")) {
 
-                });
+                const messageAccueil = "Bonjour 👋🏾, je m'appelle *Stanislas Makengo*.\nComment puis-je vous assister aujourd'hui ?";
+                sendMessage(phon_no_id, token, from, messageAccueil);
+
             } else if (msg_body.toLowerCase().includes("abonnement")) {
-                axios({
-                    method: "POST",
-                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                    data: {
-                        messaging_product: "whatsapp",
-                        to: from,
-                        text: {
-                            body: "Vous allez voir s'afficher le popup de paiement. Veuillez confirmer le code PIN.\nVous recevrez une réponse dans l'application dans un court laps de temps ! 😊"
-                        }
-                    },
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
 
-                });
+                const messageAbonnement = "Vous allez voir s'afficher le popup de paiement. Veuillez confirmer le code PIN.\nVous recevrez une réponse dans l'application dans un court laps de temps ! 😊"
+                sendMessage(phon_no_id, token, from, messageAbonnement);
+
+
 
                 //test payment
+                payment("CDF", "MPESA", "0826016607", "13");
 
-                let data = new FormData();
-                data.append('currency', 'CDF');
-                data.append('provider', 'MPESA');
-                data.append('walletID', '0826016607');
-                data.append('etudiantID', 'STDTAC20230330092HFM5UM110173');
-                data.append('abonnementID', '13');
 
-                let config = {
-                    method: 'post',
-                    maxBodyLength: Infinity,
-                    url: 'https://tag.trans-academia.cd/Api_abonnement.php',
-                    headers: {
-                        ...data.getHeaders()
-                    },
-                    data: data
-                };
-
-                axios.request(config)
-                    .then((response) => {
-                        console.log(JSON.stringify(response.data));
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
 
                 // close payment
 
             } else {
-                axios({
-                    method: "POST",
-                    url: "https://graph.facebook.com/v18.0/" + phon_no_id + "/messages?access_token=" + token,
-                    data: {
-                        messaging_product: "whatsapp",
-                        to: from,
-                        text: {
-                            body: "Bye Bye "
-                        }
-                    },
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
 
-                });
+                const message= "Bye Bye";
+                sendMessage(phon_no_id, token, from, message);
             }
 
 
