@@ -58,7 +58,7 @@ app.post("/webhook", (req, res) => { //i want some
 
                 const messageAccueil = "Bonjour 👋🏾, je m'appelle *Stanislas Makengo*.\nComment puis-je vous assister aujourd'hui ?";
                 sendMessage(phon_no_id, token, from, messageAccueil);
-                menuAbonnement("243826016607");
+                menuAbonnement(from);
 
             } else if (msg_body.toLowerCase().includes("abonnement") || msg_body.toLowerCase().includes("abonné") || msg_body.toLowerCase().includes("abonner")) {
 
