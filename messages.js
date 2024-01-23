@@ -59,7 +59,7 @@ async function payment(currency, provider, walletId, abonnement) {
 }
 
 
-async function menuAbonnement(phon_no_id, token, destinataire){
+async function menuAbonnement(phon_no_id, token, destinataire) {
     try {
         const response = await axios({
             method: "POST",
@@ -79,41 +79,43 @@ async function menuAbonnement(phon_no_id, token, destinataire){
                         "footer": {
                             "text": "Sélectionnez l'une des options pour que nous puissions vous aider"
                         },
-                        "action": {
-                            "button": "Voir les options",
-                            "sections": [
-                                {
-                                    "title": "Acheter et vendre des produits",
-                                    "rows": [
-                                        {
-                                            "id": "main-comprar",
-                                            "title": "Acheter",
-                                            "description": "Achetez les meilleurs produits pour votre maison"
-                                        },
-                                        {
-                                            "id": "main-vender",
-                                            "title": "Vendre",
-                                            "description": "Vendez vos produits"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "title": "📍Centre d'attention",
-                                    "rows": [
-                                        {
-                                            "id": "main-agencia",
-                                            "title": "Agence",
-                                            "description": "Vous pouvez visiter notre agence."
-                                        },
-                                        {
-                                            "id": "main-contacto",
-                                            "title": "Centre de contact",
-                                            "description": "L'un de nos agents vous assistera."
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
+                        "actions": [
+                            {
+                                "button": "Voir les options",
+                                "sections": [
+                                    {
+                                        "title": "Acheter et vendre des produits",
+                                        "rows": [
+                                            {
+                                                "id": "main-comprar",
+                                                "title": "Acheter",
+                                                "description": "Achetez les meilleurs produits pour votre maison"
+                                            },
+                                            {
+                                                "id": "main-vender",
+                                                "title": "Vendre",
+                                                "description": "Vendez vos produits"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "📍Centre d'attention",
+                                        "rows": [
+                                            {
+                                                "id": "main-agencia",
+                                                "title": "Agence",
+                                                "description": "Vous pouvez visiter notre agence."
+                                            },
+                                            {
+                                                "id": "main-contacto",
+                                                "title": "Centre de contact",
+                                                "description": "L'un de nos agents vous assistera."
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 }
             },
@@ -124,10 +126,10 @@ async function menuAbonnement(phon_no_id, token, destinataire){
 
         console.log("Réponse Axios :", response.data);
     } catch (error) {
-
         console.error("Erreur Axios :", error.message);
     }
 }
+
 
 
 
