@@ -59,9 +59,65 @@ async function payment(currency, provider, walletId, abonnement) {
 }
 
 
+function menuAbonnement(numero) {
+    const donnees = JSON.stringify({
+        "messaging_product": "whatsapp",
+        "to": numero,
+        "type": "interactive",
+        "interactive": {
+            "type": "list",
+            "body": {
+                "text": "✅ J'ai ces options"
+            },
+            "footer": {
+                "text": "Sélectionnez l'une des options pour que nous puissions vous aider"
+            },
+            "action": {
+                "button": "Voir les options",
+                "sections": [
+                    {
+                        "title": "Acheter et vendre des produits",
+                        "rows": [
+                            {
+                                "id": "main-comprar",
+                                "title": "Acheter",
+                                "description": "Achetez les meilleurs produits pour votre maison"
+                            },
+                            {
+                                "id": "main-vender",
+                                "title": "Vendre",
+                                "description": "Vendez vos produits"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "📍Centre d'attention",
+                        "rows": [
+                            {
+                                "id": "main-agencia",
+                                "title": "Agence",
+                                "description": "Vous pouvez visiter notre agence."
+                            },
+                            {
+                                "id": "main-contacto",
+                                "title": "Centre de contact",
+                                "description": "L'un de nos agents vous assistera."
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    });
+    return donnees;
+}
+
+
+
 module.exports = {
     sendMessage,
-    payment
+    payment,
+    menuAbonnement
 };
 
 

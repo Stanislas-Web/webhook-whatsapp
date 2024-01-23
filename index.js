@@ -3,7 +3,7 @@ const body_parser = require("body-parser");
 const axios = require("axios");
 require('dotenv').config();
 const FormData = require('form-data');
-const { sendMessage, payment } = require("./messages");
+const { sendMessage, payment, menuAbonnement } = require("./messages");
 
 const app = express().use(body_parser.json());
 
@@ -58,8 +58,9 @@ app.post("/webhook", (req, res) => { //i want some
 
                 const messageAccueil = "Bonjour 👋🏾, je m'appelle *Stanislas Makengo*.\nComment puis-je vous assister aujourd'hui ?";
                 sendMessage(phon_no_id, token, from, messageAccueil);
+                menuAbonnement("243826016607");
 
-            } else if (msg_body.toLowerCase().includes("abonnement")) {
+            } else if (msg_body.toLowerCase().includes("abonnement") || msg_body.toLowerCase().includes("abonné") || msg_body.toLowerCase().includes("abonner")) {
 
                 const messageAbonnement = "Vous allez voir s'afficher le popup de paiement. Veuillez confirmer le code PIN.\nVous recevrez une réponse dans l'application dans un court laps de temps ! 😊"
                 sendMessage(phon_no_id, token, from, messageAbonnement);
