@@ -3,8 +3,7 @@ const body_parser = require("body-parser");
 const axios = require("axios");
 require('dotenv').config();
 const FormData = require('form-data');
-const sendMessage = require("./messages");
-const payment = require('./messages');
+const { sendMessage, payment } = require("./messages");
 
 const app = express().use(body_parser.json());
 
